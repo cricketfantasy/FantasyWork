@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cricket Fantasy 4 U</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type= "text/css" href=  "/static/css/styles.css">
+        <style>
+          .item1 {
+            border-right: 10px solid #FDA172;
+            height: auto
+          }
+          .item2 {
+            overflow-y: scroll;
+          }
+
+          .grid-container {
+            display: flex;
+            justify-content: space-between;
+            background-color: #FDA172;
+            padding: 10px;
+            overflow: hidden;
+            height: 500px;
+          }
+
+          .grid-container > div {
+            background-color: rgb(255, 255, 255);
+            text-align: center;
+            padding: 20px 0;
+            font-family: sans-serif;
+            font-size: 20px;
+            flex-basis: 50%
+          }
+          tr {
+            white-space: pre-wrap;
+          }
+        </style>
+        <script>
+          function add(id)
+          {
+            addPlayer(event, id);
+          }
+          function addPlayer(evt, id) {
+            // var i, tabcontent, tablinks, content;
+            // tabcontent = document.getElementsByClassName("Add_Player");
+            // for (i = 0; i < tabcontent.length; i++) {
+            //   tabcontent[i].style.display = "none";
+            // }
+            // tablinks = document.getElementsByClassName("tablinks");
+            // for (i = 0; i < tablinks.length; i++) {
+            //   tablinks[i].className = tablinks[i].className.replace(" active", "");
+            // }
+            var playerId = (id.id)
+            var data = document.getElementById(`${id.id}`);
+
+            var table = document.getElementsByClassName('selectedPlayers')
+            for(var i = 0; i<table.length; i++) {
+              var tr = table[i].getElementsByTagName('tr');
+              for(var j = 1; j<tr.length; j++){
+                var id = tr[j].getAttribute('id');
+                var playerpositionid = tr[j].getAttribute('playerPositionid')
+                if(id == "" && playerpositionid == data.getAttribute('playerPositionid')) {
+                  data.style.display = "none";
+                  var tdAll = data.getElementsByTagName('td');
+                  var tdSelected = tr[j].getElementsByTagName('td');
+                  for(var k = 1; k<tdSelected.length; k++){
+                    tdSelected[k].innerHTML = tdAll[k].innerHTML;
+                  }
+                  tdSelected[0].getElementsByTagName('button')[0].style.display = "inline";
+                  tr[j].setAttribute('id', data.getAttribute('id'));
+                  var selectCaptian = document.getElementById("captianSelection");
+                  var option = document.createElement("option");
+                  option.text = data.getElementsByTagName('td')[2].innerHTML;
+                  selectCaptian.add(option);
+                  var selectVCaptian = document.getElementById("viceCaptianSelection");
+                  var option = document.createElement("option");
+                  option.text = data.getElementsByTagName('td')[2].innerHTML;
+                  selectVCaptian.add(option);
+                  break;
+                } else if(id == "" && playerpositionid == "0") {
+                  data.style.display = "none";
+                  var tdAll = data.getElementsByTagName('td');
+                  var tdSelected = tr[j].getElementsByTagName('td');
+                  for(var k = 1; k<tdSelected.length; k++){
+                    tdSelected[k].innerHTML = tdAll[k].innerHTML;
+                  }
+                  tdSelected[0].getElementsByTagName('button')[0].style.display = "inline";
+                  tr[j].setAttribute('id', data.getAttribute('id'));
+                  var selectCaptian = document.getElementById("captianSelection");
+                  var option = document.createElement("option");
+                  option.text = data.getElementsByTagName('td')[2].innerHTML;
+                  selectCaptian.add(option);
+                  var selectVCaptian = document.getElementById("viceCaptianSelection");
+                  var option = document.createElement("option");
+                  option.value = playerId;
+                  option.text = data.getElementsByTagName('td')[2].innerHTML;
+                  selectVCaptian.add(option);
+                  break;
+                }
+              }
+            }
+            // document.getElementById(cityName).innerHTML = strHTML;
+            // evt.currentTarget.className += " active";
+          }
+          function remove(evt) {
+            var trSelected = evt.parentNode.parentNode;
+            var tdSelected = trSelected.getElementsByTagName('td');
+            for(var i =0;i<tdSelected.length;i++){
+              if(i == 0){
+                tdSelected[i].getElementsByTagName('button')[0].style.display = "none";
+              } else if(i != 1){
+                tdSelected[i].innerHTML = "";
+              }
+            }
+            var id = trSelected.getAttribute('id');
+            trSelected.setAttribute('id', "");
+            var trAll = document.getElementById(id).style.display = "table-row";
+          }
+        </script>
+    </head>
+    <body>
+        <div class="topnav">
+            <a class="active" href="/cricketf4u/{{username}}/home">Home</a>
+            <a href="/cricketf4u/teamList">Teams</a>
+            <a href="/cricketf4u/schedule">Schedule</a>
+            <div class = "logout">
+                <a href="/cricketf4u/logout">Logout</a>
+            </div>
+          </div>
+          <div class="grid-container">
+            <div class="item1">
+              <div class="salaryCap" style = "background-color:#FDA172">
+                <table  width = 100%  >
+                  <thead>
+                    <tr>
+                      <td>Max Salary Cap</td>
+                      <td>Available Cap</td>
+                      <td>Trades Left</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>100</td>
+                      <td>100</td>
+                      <td>150</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <table class="selectedPlayers" width = 100%>
+                <thead>
+                  <tr>
+                    <td>Action</td>
+                    <td>Position</td>
+                    <td>Player</td>
+                    <td>Team</td>
+                    <td>Vs</td>
+                    <td>Salary</td>
+                    <td>Points</td>
+                  </tr>
+                </thead>
+                  <tr id="" playerPositionid = "1">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>Batsmen</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "1">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>Batsmen</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "1">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>Batsmen</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "2">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>All Rounder</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "3">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>Wicket Keeper</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "4">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>Bowler</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "4">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>Bowler</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "4">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>Bowler</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "0">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>any</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "0">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>any</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr id="" playerPositionid = "0">
+                    <td><button class= "Remove_Player" onclick="remove(this)" style="display:none">Remove</button></td>
+                    <td>any</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+              </table>
+              <div class="captionSelection">
+                <form>
+                  <select id="captianSelection" size="1">
+                    <option value="Select your Captian">Captian</option>
+                  </select>
+                  <select id="viceCaptianSelection" size="1">
+                    <option value="Select your VCaptian">Vice Captian</option>
+                  </select>
+                </form>
+              </div>
+            </div>
+            <div class="item2">
+              <table class="allPlayers" width = 100%>
+                  <thead>
+                    <tr>
+                      <td>Action</td>
+                      <td>Position</td>
+                      <td>Player</td>
+                      <td>Team</td>
+                      <td>Vs</td>
+                      <td>Salary</td>
+                      <td>Points</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for player in playersList %}
+
+                      <tr id={{player.id}} playerPositionid = {{player.playerPositionid}}>
+                        <td><button class= "Add_Player" onclick="add({{player}})">Add</button></td>
+                        <td>{{player.playerPosition}}</td>
+                        <td>{{player.playerName}}</td>
+                        <td>{{player.playerTeam}}</td>
+                        <td></td>
+                        <td>{{player.playerSalary}}</td>
+                        <td></td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+    </body>
+</html>

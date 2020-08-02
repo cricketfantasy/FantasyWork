@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cricket Fantasy 4 U</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type= "text/css" href=  "/static/css/styles.css">
+    </head>
+    <body>
+        <div class="topnav">
+            <a class="active" href="/cricketf4u/{{username}}/home">Home</a>
+            <a href="/cricketf4u/teamList">Teams</a>
+            <a href="/cricketf4u/schedule">Schedule</a>
+            <div class = "logout">
+                <a href="/cricketf4u/logout">Logout</a>
+            </div>
+        </div>
+        <table>
+            <thead>
+              <tr>
+                <td>Team Name</td>
+                <td>User Name</td>
+              </tr>
+            </thead>
+            {% for leagueTeam in leagueTeamList %}
+              <tr>
+                <td>{{leagueTeam.teamName}}</td>
+                <td>{{leagueTeam.teamUser}}</td>
+              </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

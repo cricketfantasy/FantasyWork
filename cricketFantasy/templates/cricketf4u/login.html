@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type= "text/css" href= "/static/css/styles.css">
+
+</head>
+<body>
+  <div classs = "login_signup_div">
+  <div class="container_login">
+    <form  method="post">
+      {% csrf_token %}
+      <table class = "login_table" width = 40%>
+        <tr>
+          <td>
+            <label>Username</label>
+          </td>
+            <td>
+            <label>Password</label>
+            </td>
+        </tr>
+        <tr>
+          <td>
+            <input class = "text_login" type="text" name="username" placeholder="Enter Username" required>
+          </td>
+          <td>
+            <input type="password" name="pwd" placeholder="Enter Password" required style ="border-radius: 3px;
+            border: 1px solid #ccc;">
+          </td>
+          <td>
+            <button class= "login_button"type="submit" name="action" value= "login">Login</button></a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <a href="#">Forgot account?</a>
+          </td>
+          <td>
+            <input type="checkbox" checked="checked" name="remember"> Remember me
+          </td>
+        </tr>
+      </table>
+    </form>
+
+  </div>
+
+    <div class="container_signup">
+        <h1>Sign Up</h1><br>
+        <form method="post">
+          {% csrf_token %}
+          <table class = "signup_table">
+            <tr>
+              <td>
+                <input class = "text_signup" type="text" name="first_Name" placeholder="First Name" style="width: 47%;"> &nbsp; &nbsp;
+                <input class = "text_signup" type="text" name="last_Name" placeholder="Last Name" style="width: 47%;">
+              </td>
+            </tr>
+        </table>
+        <br>
+          <input type="email" name="email"placeholder="E-mail" style="
+        padding: 9px;
+        width: 94%;
+        border-radius: 3px;
+        border: 1px solid #ccc;"><br> <br>
+        <input type="text" name="username"placeholder="User Name" style="
+      padding: 9px;
+      width: 94%;
+      border-radius: 3px;
+      border: 1px solid #ccc;"><br> <br>
+          <input type="password" name="password" placeholder="Password" style="
+        padding: 9px;
+        width: 94%;
+        border-radius: 3px;
+        border: 1px solid #ccc;"><br> <br>
+          <label>Birthday</label> <br></br> <input type="date" name="dateOfBirth" placeholder="Date" style="
+        padding: 9px;
+        width: 94%;
+        border-radius: 3px;
+        border: 1px solid #ccc;"><br> <br>
+          <label>Gender</label> <br> <br>
+          <input type="radio" name="gender" value"male">
+          <label><b>Male</b></label>
+          <input type="radio" name="gender" value"female">
+          <label><b>Female</b></label>
+          <input type="radio" name="gender" value"others">
+          <label><b>Custom</b></label> <br><br>
+          <button class= "signup_button"type="submit" name="action" value= "signUP">Sign Up</button></a>
+        </form>
+
+  </div>
+</div>
+
+</body>
+</html>

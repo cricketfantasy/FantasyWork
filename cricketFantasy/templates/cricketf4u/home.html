@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cricket Fantasy 4 U</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type= "text/css" href=  "/static/css/styles.css">
+    </head>
+    <body>
+        <div class="topnav">
+            <a class="active" href="/cricketf4u/{{username}}/home">Home</a>
+            <a href="/cricketf4u/teamList">Teams</a>
+            <a href="/cricketf4u/schedule">Schedule</a>
+            <div class = "logout">
+                <a href="/cricketf4u/logout">Logout</a>
+            </div>
+          </div>
+          <h1>Welcome {{username}}</h1>
+          <div class="tab">
+            <button class="tablinks" onclick="userLeagues(event, 'London')">My Leagues</button>
+            <button class="tablinks" onclick="createOrJoin(event, 'Paris')">Join/Create Private League</button>
+            <button class="tablinks" onclick="userTeams(event, 'Tokyo')">My Teams</button>
+          </div>
+
+          <div id="London" class="tabcontent">
+          </div>
+
+          <div id="Paris" class="tabcontent">
+            <div id="createLeague" style="width: calc(40% - 40px);">
+              <form  method="post">
+                {% csrf_token %}
+              <h3>Create Private League</h3>
+              <table class = "create_league" width = 40%>
+                <tr>
+                  <td>
+                    <input class="text_league" type="text" name="leagueName" placeholder="Your League Name" required>
+                  </td>
+                  <td>
+                    <input class="text_league" type="text" name="teamName" placeholder="Your Team Name" required>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <select name="noOfTeams" id="noofteams" required>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                      <option value="200">200</option>
+                      <option value="400">400</option>
+                      <option value="Unlimited">Unlimited</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <input type="checkbox" checked="checked" name="toPublic"> Yes, <b>Open to Public</b>
+                  </td>
+                </tr>
+              </table>
+              <button class= "button_league"type="submit" name="action" value= "createleague">Create League</button>
+            </form>
+            </div>
+            <div id="joinLeague" style="width: calc(60% - 40px); display: flex;">
+              <form  method="POST">
+                {% csrf_token %}
+                <div id="privateLeague" style="width: calc(40% - 30px);">
+                <h3>Join With Invitation Code</h3>
+                <table>
+                  <tr>
+                    <td>
+                      <label>Invitation Code</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input class="text_league" type="text" name="invitecode" placeholder="Invitation Code" required>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <label>Team Name</label>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input class="text_league" type="text" name="teamName" placeholder="Your Team Name" required>
+                    </td>
+                  </tr>
+                </table>
+                <button class= "button_league"type="submit" name="action" value= "joinleague">Join League</button>
+                </div>
+              </from>
+              <div id="publicLeague" style="width: calc(60% - 20px);">
+                <h3>Join Private Leagues that Open to Public</h3>
+              </div>
+            </div>
+          </div>
+
+          <div id="Tokyo" class="tabcontent">
+          </div>
+
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+          <script>
+            function userLeagues(evt, cityName) {
+              var i, tabcontent, tablinks, content;
+              $.ajax({
+                           type: "GET",
+                           url: '{{ '/cricketf4u/myleagues' }}',
+                           dataType: 'json',
+                           success: function (data) {
+                                        console.log(data);
+                                        var strHTML = '<table><tr><th>Team Name</th><th>League Name</th></tr>';
+                                        $(data).each(function(){
+                                          var row = $(this)[0];
+                                          var leagueID = row['leagueID'];
+                                          console.log(leagueID);
+                                          strHTML += '<tr><td>' + row['teamName'] + '</td><td><a href="/cricketf4u/leaguehome/'+leagueID+'">' +row['leagueName'] + '</a></td></tr>'
+
+                                        });
+                                        strHTML += '</table>'
+                                        console.log(strHTML);
+
+                                        tabcontent = document.getElementsByClassName("tabcontent");
+                                        for (i = 0; i < tabcontent.length; i++) {
+                                          tabcontent[i].style.display = "none";
+                                        }
+                                        tablinks = document.getElementsByClassName("tablinks");
+                                        for (i = 0; i < tablinks.length; i++) {
+                                          tablinks[i].className = tablinks[i].className.replace(" active", "");
+                                        }
+                                        document.getElementById(cityName).style.display = "block";
+                                        document.getElementById(cityName).innerHTML = strHTML;
+                          }
+                        });
+
+              evt.currentTarget.className += " active";
+            }
+            function userTeams(evt, cityName) {
+              var i, tabcontent, tablinks, content;
+              $.ajax({
+                           type: "GET",
+                           url: '{{ '/cricketf4u/myteams' }}',
+                           dataType: 'json',
+                           success: function (data) {
+                                        console.log(data);
+                                        var strHTML = '<table><tr><th>Team Name</th><th>League Name</th></tr>';
+                                        $(data).each(function(){
+                                          var row = $(this)[0];
+                                          var teamID = row['teamID'];
+                                          strHTML += '<tr><td><a href="/cricketf4u/{{username}}/manageteam/'+teamID+'">' + row['teamName'] + '</a></td><td>' +row['leagueName'] + '</td></tr>'
+                                        });
+                                        strHTML += '</table>'
+
+                                        tabcontent = document.getElementsByClassName("tabcontent");
+                                        for (i = 0; i < tabcontent.length; i++) {
+                                          tabcontent[i].style.display = "none";
+                                        }
+                                        tablinks = document.getElementsByClassName("tablinks");
+                                        for (i = 0; i < tablinks.length; i++) {
+                                          tablinks[i].className = tablinks[i].className.replace(" active", "");
+                                        }
+                                        document.getElementById(cityName).style.display = "block";
+                                        document.getElementById(cityName).innerHTML = strHTML;
+                          }
+                        });
+
+              evt.currentTarget.className += " active";
+            }
+            function createOrJoin(evt, cityName) {
+              var i, tabcontent, tablinks, content;
+              tabcontent = document.getElementsByClassName("tabcontent");
+              for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+              }
+              tablinks = document.getElementsByClassName("tablinks");
+              for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+              }
+              document.getElementById(cityName).style.display = "flex";
+              document.getElementById(cityName).style.flexDirection = "row";
+              evt.currentTarget.className += " active";
+            }
+            </script>
+
+    </body>
+
+</html>
